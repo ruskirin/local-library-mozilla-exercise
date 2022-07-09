@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ author.last_name }} {{ author.first_name }}</h1>
+
+    <p>
+        {{ author.dob }} -
+        {% if author.dod == None %}
+
+        {% else %}
+            author.dod
+        {% endif %}
+    </p>
+
+    <div style="margin-left: 20px; margin-top: 20px">
+        {% for book in author.book_set.all %}
+            <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+            <p><strong>Summary:</strong> {{ book.summary }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}

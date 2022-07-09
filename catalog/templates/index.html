@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <img class="index-title-img"
+         src="../static/images/img-library.jpg"
+         alt="Photo of library bookshelves">
+
+    <p>Welcome back! You have been here {{ num_visits }} times</p>
+{% endblock %}
+
+{% block content %}
+    <h1>Local Library Home</h1>
+    <p>Welcome to your LocalLibrary! This website was developed mostly by
+        <em>Mozilla</em> and a little by yours truly, Rinat Ibragimov.</p>
+
+    <h2>Dynamic Content</h2>
+    <p>The library has the following record counts:</p>
+    <ul>
+        <li><strong>Books:</strong> {{ num_books }}</li>
+        <li><strong>Languages:</strong> {{ num_languages }}</li>
+        <li><strong>Genres:</strong> {{ num_genres }}</li>
+        <li><strong>Copies:</strong> {{ num_instances }}</li>
+        <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
+        <li><strong>Authors:</strong> {{ num_authors }}</li>
+        <ul>
+            <li><strong>Rinat Ibragimov:</strong> {{ num_author_rinat }}</li>
+
+        </ul>
+    </ul>
+{% endblock %}

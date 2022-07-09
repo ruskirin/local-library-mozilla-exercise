@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>All Library Books</h1>
+
+    {% if instance_list %}
+        <ul>
+            {% for inst in instance_list %}
+                <li>
+                    <a href="{% url 'book-detail' inst.book.pk %}">{{ inst.book }}</a> ({{ inst.instance_id }})
+                    - status: {{ inst.status }}{% if inst.status == 'o' %} - {{ inst.borrower }} ({{ inst.due_back }}){% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No books available for viewing. Contact admin.</p>
+    {% endif %}
+{% endblock %}
