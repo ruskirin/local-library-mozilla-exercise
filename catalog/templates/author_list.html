@@ -16,5 +16,9 @@
         <p>There are no registered authors in the library!</p>
     {% endif %}
 
+    {% if perms.catalog.can_edit_authors %}
+        <a class="btn btn-secondary" href="{% url 'authors-create' %}">Add Author</a>
+    {% endif %}
+
     {{ block.super }}
 {% endblock %}

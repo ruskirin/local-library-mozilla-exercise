@@ -4,7 +4,20 @@ from django.contrib.auth.models import User
 import uuid
 from datetime import date
 
+
 DEF_CHARFIELD_LENGTH = 200
+BOOK_GENRES = ['fiction',
+               'science fiction',
+               'history',
+               'drama',
+               'romance',
+               'action',
+               'suspense',
+               'horror',
+               'thriller',
+               'biography']
+LANGUAGES = ['English', 'Russian', 'Korean', 'Spanish', 'Mandarin', 'Cantonese',
+             'Ukrainian', 'Italian', 'French', 'Japanese']
 
 
 class Author(models.Model):
@@ -15,7 +28,7 @@ class Author(models.Model):
         blank=True
     )
     dod = models.DateField(
-        'Died',
+        'died',
         null=True,
         blank=True
     )
@@ -24,10 +37,13 @@ class Author(models.Model):
         return f'{self.last_name}, {self.first_name}'
 
     def get_absolute_url(self):
-        return reverse('author-detail', args=[str(self.id)])
+        return reverse('authors-detail', args=[str(self.id)])
 
     class Meta:
         ordering = ['last_name', 'first_name']
+        permissions = (
+            ('can_edit_authors', 'Can modify available list of authors'),
+        )
 
 
 class Genre(models.Model):
@@ -84,6 +100,7 @@ class Book(models.Model):
     # Return comma-separated list of genres for list display
     def display_genre(self):
         return ', '.join(genre.name for genre in self.genre.all()[:])
+
     display_genre.short_description = 'Genre'
 
     def __str__(self):
@@ -91,6 +108,11 @@ class Book(models.Model):
 
     def get_absolute_url(self):
         return reverse('book-detail', args=[str(self.id)])
+
+    class Meta:
+        permissions = (
+            ('can_edit_books', 'Can edit available books'),
+        )
 
 
 class BookInstance(models.Model):
@@ -141,6 +163,6 @@ class BookInstance(models.Model):
     class Meta:
         ordering = ['due_back']
         permissions = (
-            ('can_mark_returned', 'Can set book as returned'),
-            ('can_view_all', 'Can view all available book instances')
+            ('can_mark_returned_books', 'Can set book as returned'),
+            ('can_view_all_books', 'Can view all available book instances'),
         )

@@ -4,12 +4,57 @@
     <h1>All Library Books</h1>
 
     {% if instance_list %}
+        <h4>Available:</h4>
         <ul>
             {% for inst in instance_list %}
-                <li>
-                    <a href="{% url 'book-detail' inst.book.pk %}">{{ inst.book }}</a> ({{ inst.instance_id }})
-                    - status: {{ inst.status }}{% if inst.status == 'o' %} - {{ inst.borrower }} ({{ inst.due_back }}){% endif %}
-                </li>
+                {% if inst.status == 'a' %}
+                    <li>
+                        <a href="{% url 'book-detail' inst.book.pk %}">
+                            {{ inst.book }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <br>
+        <h4>On Loan:</h4>
+        <ul>
+            {% for inst in instance_list %}
+                {% if inst.status == 'o' %}
+                    <li>
+                        <a href="{% url 'book-detail' inst.book.pk %}">{{ inst.book }}</a>
+                        <span {% if inst.is_overdue %} class="text-danger" {% endif %}>
+                            - {{ inst.borrower }} ({{ inst.due_back }})
+                        </span>
+                        <a href="{% url 'books-renew-librarian' inst.instance_id %}">renew</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <br>
+        <h4>Reserved:</h4>
+        <ul>
+            {% for inst in instance_list %}
+                {% if inst.status == 'r' %}
+                    <li>
+                        <a href="{% url 'book-detail' inst.book.pk %}">
+                            {{ inst.book }}
+                        </a> ({{ inst.instance_id }})
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <br>
+        <h4>Unavailable:</h4>
+        <ul>
+            {% for inst in instance_list %}
+                {% if inst.status == 'm' %}
+                    <li>
+                        <a href="{% url 'book-detail' inst.book.pk %}">
+                            {{ inst.book }}
+                        </a> ({{ inst.instance_id }})
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     {% else %}

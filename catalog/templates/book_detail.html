@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Title: {{ book.title }}</h1>
+    <h1>{{ book.title }}</h1>
 
     <p><strong>Author:</strong> <a href="">{{ book.author }}</a></p> <!-- author detail link not yet defined -->
     <p><strong>Summary:</strong> {{ book.summary }}</p>
     <p><strong>ISBN:</strong> {{ book.isbn }}</p>
     <p><strong>Language:</strong> {{ book.language }}</p>
     <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p>
+
+    {% if perms.catalog.can_edit_books %}
+        <a class="btn btn-secondary" href="{% url 'books-update' book.id %}">Edit</a>
+        <a class="btn btn-secondary" href="{% url 'books-delete' book.id %}">Delete</a>
+    {% endif %}
 
     <div style="margin-left: 20px; margin-top: 20px">
         <h4>Copies</h4>
@@ -21,13 +26,13 @@
                 {{ copy.get_status_display }}
             </p>
 
-            {% if copy.status != 'a' %}
+            {% if copy.status == 'o' %}
                 <p><strong>Return due:</strong> {{ copy.due_back }}</p>
             {% endif %}
 
             <p><strong>Imprint:</strong> {{ copy.imprint }}</p>
 
-            <p class='text-muted'><strong>Id: </strong>{{ copy.id }}</p>
+            <p class='text-muted'><strong>Id: </strong>{{ copy.instance_id }}</p>
         {% endfor %}
     </div>
 
